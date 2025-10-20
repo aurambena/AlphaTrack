@@ -1,26 +1,24 @@
-import axios, {
-  AxiosInstance,
-  InternalAxiosRequestConfig,
-  AxiosError,
-} from "axios";
+import axios from "axios";
 
-const api: AxiosInstance = axios.create({
-  baseURL: "http://localhost:5000/api",
+const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000",
   withCredentials: true,
 });
 
-// Interceptor to attach token in dev mode
-api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
-      const token = localStorage.getItem("accessToken");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    // handle expired token if needed
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      // try to refresh token here
+      return Promise.reject(error); // Let hook handle redirect
     }
-    return config;
-  },
-  (error: AxiosError) => Promise.reject(error)
+
+    return Promise.reject(error);
+  }
 );
 
 export default api;

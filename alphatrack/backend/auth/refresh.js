@@ -13,7 +13,7 @@ loginRouter.post('/refresh', async (req, res) => {
     const newAccessToken = jwt.sign(
       { _id: user._id },
       process.env.JWT_SECRET,
-      { expiresIn: '15m' }
+      { expiresIn: '2h' }
     );
 
     const isProduction = process.env.NODE_ENV === "production";

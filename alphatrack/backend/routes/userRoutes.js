@@ -4,7 +4,7 @@ import User from "../models/User.js";
 
 const router = express.Router();
 
-// ✅ Protected route
+// Protected route
 router.get("/me", auth, async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select("-password");
@@ -13,6 +13,12 @@ router.get("/me", auth, async (req, res) => {
   } catch (err) {
     res.status(500).send("Server error");
   }
+});
+
+
+//Check if user is authenticated (for frontend)
+router.get("/verify", auth, (req, res) => {
+  res.json({ authenticated: true });
 });
 
 export default router;

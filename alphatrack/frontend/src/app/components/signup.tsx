@@ -17,29 +17,29 @@ export default function SignupForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-80 m-auto mt-20">
-      <input
+    <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-80 mt-40 m-auto ">
+      <input 
         type="text"
         placeholder="Name"
         value={form.name}
         onChange={e => setForm({ ...form, name: e.target.value })}
-        className="border p-2"
+        className="border p-2 py-3 px-3 rounded"
       />
       <input
         type="email"
         placeholder="Email"
         value={form.email}
         onChange={e => setForm({ ...form, email: e.target.value })}
-        className="border p-2"
+        className="border p-2 py-3 px-3 rounded"
       />
       <input
         type="password"
         placeholder="Password"
         value={form.password}
         onChange={e => setForm({ ...form, password: e.target.value })}
-        className="border p-2"
+        className="border p-2 py-3 px-3 rounded"
       />
-      <button type="submit" className="bg-blue-500 text-white p-2 rounded">
+      <button type="submit" className="bg-white text-black  hover:bg-black hover:text-white font-bold py-2 px-4 rounded cursor-pointer text-xl">
         Sign up
       </button>
       <p>{message}</p>

@@ -18,10 +18,10 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        // ✅ Get access token from localStorage (dev mode)
+        // Get access token from localStorage (dev mode)
         const token = localStorage.getItem("accessToken");
 
-        // ✅ Make request using either Authorization header (dev) or cookies (prod)
+        // Make request using either Authorization header (dev) or cookies (prod)
         const res = await api.get("http://localhost:5000/api/users/me", {
           headers: token
             ? { Authorization: `Bearer ${token}` } // dev mode
