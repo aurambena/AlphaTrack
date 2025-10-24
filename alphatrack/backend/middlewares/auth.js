@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 
 export default function auth(req, res, next) {
-  // 🧩 1️⃣ Try to get token from cookies (production)
+  //Try to get token from cookies (production)
   let token = req.cookies?.accessToken;
 
-  // 🧩 2️⃣ If not found, try from Authorization header (development)
+  // If not found, try from Authorization header (development)
   if (!token && req.headers.authorization) {
     token = req.header("Authorization").replace("Bearer ", ""); 
   }
@@ -20,3 +20,4 @@ export default function auth(req, res, next) {
         res.status(400).send('Invalid token')
     }
 }
+

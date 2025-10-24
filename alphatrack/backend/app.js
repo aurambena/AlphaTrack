@@ -6,7 +6,11 @@ import signupRouter from './auth/signUp.js';
 import loginRouter from './auth/login.js';
 import error from './middlewares/error.js';
 import cookieParser from 'cookie-parser';
-import userRouters from './routes/userRoutes.js'
+import userRouters from './routes/userRoutes.js';
+import refreshRouter from './auth/refresh.js';
+import platform from './routes/platform.js';
+import tradeRoutes from './routes/trade.js';
+
 
 //Create an app 
 const app = express();
@@ -52,6 +56,9 @@ signupRouter.get("/test", (req, res) => {
 app.use("/api/users", signupRouter);
 app.use("/api/users", loginRouter);
 app.use("/api/users", userRouters);
+app.use("/api/users", refreshRouter);
+app.use("/api/perpetual", platform);
+app.use("/api/perpetual", tradeRoutes);
 app.use(error);
 
 export default app

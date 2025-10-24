@@ -48,12 +48,20 @@ export default function Navbar() {
         </div>
         <div className="flex gap-8">
           {isLoggedIn ? (
+            <>
+            <Link
+              href="/dashboard"
+              className="hover:bg-white hover:text-black font-bold py-2 px-4 rounded"
+            >
+                Dashboard
+              </Link>
             <button
               onClick={handleLogout}
               className="hover:bg-white hover:text-black font-bold py-2 px-4 rounded"
             >
               Logout
             </button>
+            </>
           ) : (
             <>
               <Link

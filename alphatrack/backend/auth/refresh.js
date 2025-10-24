@@ -1,4 +1,10 @@
-loginRouter.post('/refresh', async (req, res) => {
+import express from 'express';
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
+
+const refreshRouter = express.Router();
+
+refreshRouter.post('/refresh', async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
   if (!refreshToken) return res.status(401).json({ message: 'No refresh token' });
 
@@ -13,7 +19,7 @@ loginRouter.post('/refresh', async (req, res) => {
     const newAccessToken = jwt.sign(
       { _id: user._id },
       process.env.JWT_SECRET,
-      { expiresIn: '2h' }
+      { expiresIn: '15m' }
     );
 
     const isProduction = process.env.NODE_ENV === "production";
@@ -42,3 +48,5 @@ loginRouter.post('/refresh', async (req, res) => {
     return res.status(403).json({ message: "Invalid or expired refresh token" });
   }
 });
+
+export default refreshRouter;
