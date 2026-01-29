@@ -17,7 +17,7 @@ refreshRouter.post('/refresh', async (req, res) => {
     }
 
     const newAccessToken = jwt.sign(
-      { _id: user._id },
+      { id: user._id },
       process.env.JWT_SECRET,
       { expiresIn: '15m' }
     );
@@ -31,13 +31,14 @@ refreshRouter.post('/refresh', async (req, res) => {
       secure: true,    
       sameSite: "none",  
       path: "/",        
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      maxAge: 15 * 60 * 60 * 1000,
     });
     return res.json({ message: "Access token refreshed ✅" });
   }else{
     res
   .header('Authorization', newAccessToken)
   .json({
+    accessToken: newAccessToken,
     message: "Login successful (dev mode)",
     user: { id: user._id, email: user.email },
   });

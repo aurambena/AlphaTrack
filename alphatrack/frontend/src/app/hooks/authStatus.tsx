@@ -27,8 +27,8 @@ export default function useAuthStatus() {
           router.push("/auth/login");
       }
     };
-
     checkUserStatus();
+
   }, [router]);
 
   return { isLoggedIn };

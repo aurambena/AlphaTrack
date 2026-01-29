@@ -3,6 +3,7 @@ import {  Funnel_Display } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "./ClientLayout";
 import Navbar from "./components/Navbar"; 
+import { AuthProvider } from "./context/AuthContext";
 
 const funnelDisplay = Funnel_Display({
   subsets: ["latin"],
@@ -27,8 +28,11 @@ export default function RootLayout({
       <body
         className={`${funnelDisplay.variable} antialiased`}
       >
-        <Navbar /> 
+        <AuthProvider>
+          <Navbar /> 
         <ClientLayout>{children}</ClientLayout>
+        </AuthProvider>
+        
       </body>
     </html>
   );

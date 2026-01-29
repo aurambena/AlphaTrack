@@ -1,10 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useAuth } from "@/app/context/AuthContext";
+
 
 export default function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null); 
+  const { isLoggedIn, setIsLoggedIn } = useAuth();
 
   useEffect(() => {
     const verifySession = async () => {
@@ -29,6 +31,8 @@ export default function Navbar() {
   const handleLogout = async () => {
     if (process.env.NODE_ENV === "development") {
       localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    setIsLoggedIn(false);
     } else {
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/logout`, {
         method: "POST",
@@ -51,7 +55,7 @@ export default function Navbar() {
             <>
             <Link
               href="/dashboard"
-              className="hover:bg-white hover:text-black font-bold py-2 px-4 rounded"
+              className="hover:bg-red-600 hover:text-black font-bold py-2 px-4 rounded"
             >
                 Dashboard
               </Link>

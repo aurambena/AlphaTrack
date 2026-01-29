@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "../interceptors/api"; // your axios instance with interceptor
+import Link from "next/link";
 
 interface User {
   _id: string;
@@ -47,8 +48,13 @@ export default function DashboardPage() {
     <div className="flex flex-col items-center justify-center min-h-screen">
       {user ? (
         <>
-          <h1 className="text-3xl font-bold">🏠 Dashboard</h1>
-          <p>Welcome, {user.email} ✅</p>
+          <h1 className="text-3xl font-bold m-4">📈 Dashboard</h1>
+          <p className="m-4">Welcome, {user.email} {user._id} What do you want to do?</p>
+          <section className="m-4">
+            <Link className="bg-white text-black  hover:bg-black hover:text-white font-bold py-2 px-4 rounded cursor-pointer text-xl" href="/perpetual">
+            Perpetual
+          </Link>
+          </section>
         </>
       ) : (
         <p>Redirecting to login...</p>

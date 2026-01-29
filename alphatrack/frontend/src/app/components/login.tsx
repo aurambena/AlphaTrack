@@ -1,12 +1,17 @@
 "use client";
 import { useState } from "react";
 import axios from "axios";
-import router from "next/router";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/context/AuthContext";
 
 export default function LoginForm() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
+  const { setIsLoggedIn } = useAuth();
 
+
+  const router = useRouter();
+  
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   try {
@@ -18,10 +23,12 @@ export default function LoginForm() {
       // Store tokens locally for dev
       localStorage.setItem("accessToken", res.data.accessToken);
       localStorage.setItem("refreshToken", res.data.refreshToken);
+      setIsLoggedIn(true);
     }
 
     const { user, message } = res.data;
     setMessage(`✅ ${message} — ${user.email}`);
+    router.push("/dashboard");
 
   } catch {
     setMessage(`❌ "Something went wrong"}`);

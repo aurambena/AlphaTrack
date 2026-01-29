@@ -9,6 +9,7 @@ const PerpetualTradeSchema = new mongoose.Schema(
     // platform: { type: mongoose.Schema.Types.ObjectId, ref: "Platform" },
     entryPrice: { type: Number, required: true },
     exitPrice: { type: Number },
+    margin: { type: Number },
     leverage: { type: Number },
     openDate: { type: Date, required: true },
     closeDate: { type: Date },

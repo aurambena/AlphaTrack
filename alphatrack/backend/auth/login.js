@@ -15,13 +15,13 @@ loginRouter.post('/login', async (req, res)=>{
     if (!validPassword) return res.status(400).send('Invalid email or password')
     
     const accessToken = jwt.sign(
-    { _id: user._id },
+    { id: user._id },
     process.env.JWT_SECRET,
     { expiresIn: '15m' }
   );
 
   const refreshToken = jwt.sign(
-    { _id: user._id },
+    { id: user._id },
     process.env.JWT_REFRESH_SECRET,
     { expiresIn: '7d' }
   );

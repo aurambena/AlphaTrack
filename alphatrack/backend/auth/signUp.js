@@ -24,7 +24,7 @@ signupRouter.post('/signup', async(req, res)=>{
         await user.save();
 
         const token = jwt.sign({
-            _id: user._id,
+            id: user._id,
             role: user.role,
         },process.env.JWT_SECRET,{
             //for safety 
@@ -36,6 +36,7 @@ signupRouter.post('/signup', async(req, res)=>{
             .header('Authorization', token)
             .json({
                user: {
+               id: user._id,
                name: user.name,
                email: user.email,
                role: user.role,

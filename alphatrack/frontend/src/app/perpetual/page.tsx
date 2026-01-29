@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "../interceptors/api"; 
+import Link from "next/link";
 
 interface User {
   _id: string;
@@ -45,7 +46,18 @@ export default function Perpetual() {
       <div className="flex flex-col items-center justify-center min-h-screen">
       {user ? (
         <>
-          <h1 className="text-3xl font-bold">YourData</h1>
+          <h1 className="text-3xl font-bold m-5">YourData</h1>
+          <section className="flex flex-row m-4 gap-10">
+            <Link className="bg-white text-black  hover:bg-black hover:text-white font-bold py-2 px-4 rounded cursor-pointer text-xl" href="/perpetual/newTrade">
+            Add new trade
+          </Link>
+          <Link className="bg-white text-black  hover:bg-black hover:text-white font-bold py-2 px-4 rounded cursor-pointer text-xl" href="/perpetual/newPlatform">
+            Add new platform
+          </Link>
+          <Link className="bg-white text-black  hover:bg-black hover:text-white font-bold py-2 px-4 rounded cursor-pointer text-xl" href="/perpetual/stats">
+            My Stats
+          </Link>
+          </section>
         </>
       ) : (
         <p>Redirecting to login...</p>

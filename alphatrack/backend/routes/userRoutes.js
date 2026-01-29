@@ -7,7 +7,9 @@ const router = express.Router();
 // Protected route
 router.get("/me", auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).select("-password");
+    console.log("🔍 req.user:", req.user);
+    console.log("🔍 Looking for user with _id:", req.user.id);
+    const user = await User.findById(req.user.id).select("-password");
     if (!user) return res.status(404).send("User not found");
     res.json(user);
   } catch (err) {

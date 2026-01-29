@@ -14,6 +14,8 @@ export default function auth(req, res, next) {
         //this function verity the token and return the decoded token
         const verified = jwt.verify(token, process.env.JWT_SECRET)
         req.user = verified;
+        console.log("User authenticated:", req.user.id);
+
         //pass to next middleware
         next();
     }catch(error){

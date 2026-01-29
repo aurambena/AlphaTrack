@@ -7,7 +7,10 @@ const router = express.Router();
 // Get all trades for a user
 router.get("/trades", auth, async (req, res) => {
   try {
-    const trades = await PerpetualTrade.find({ user: req.user.id }).populate("platform");
+     console.log("🔍 Fetching trades for user:", req.user.id);
+    const trades = await PerpetualTrade.find({ user: req.user.id });
+    // .populate("platform");
+    console.log(`✅ Found ${trades.length} trades for user ${req.user.id}`);
     res.json(trades);
   } catch (err) {
     console.error("❌ Error fetching trades:", err);
