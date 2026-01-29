@@ -55,7 +55,7 @@ export default function Navbar() {
             <>
             <Link
               href="/dashboard"
-              className="hover:bg-red-600 hover:text-black font-bold py-2 px-4 rounded"
+              className="hover:bg-white hover:text-black font-bold py-2 px-4 rounded"
             >
                 Dashboard
               </Link>

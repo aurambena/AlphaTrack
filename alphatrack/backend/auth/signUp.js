@@ -21,6 +21,7 @@ signupRouter.post('/signup', async(req, res)=>{
     });
 
     try{
+
         await user.save();
 
         const token = jwt.sign({
