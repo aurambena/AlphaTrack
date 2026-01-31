@@ -27,8 +27,9 @@ loginRouter.post('/login', async (req, res)=>{
   );
 
   
-  // Save refresh token in DB 
-  user.refreshToken = refreshToken;
+  // Save encrypted refresh token in DB in case the database is compromised
+  const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+  user.refreshToken = hashedRefreshToken;
   await user.save();
    
   const isProduction = process.env.NODE_ENV === "production";
@@ -65,8 +66,6 @@ if (isProduction) {
     user: { id: user._id, email: user.email },
   });
 }
-
- 
 });
 
 export default loginRouter;

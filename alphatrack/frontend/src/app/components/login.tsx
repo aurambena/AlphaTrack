@@ -1,62 +1,62 @@
 "use client";
-import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { FormInput } from "./FormInput";
+import { useForm } from "react-hook-form";
+
+  const registerSchema = z.object({
+    email: z.string().email("Invalid email"),
+    password: z.string().min(8, "password needed"),
+})
+
+type RegisterFormData = z.infer<typeof registerSchema>; 
 
 export default function LoginForm() {
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [message, setMessage] = useState("");
-  const { setIsLoggedIn } = useAuth();
- 
+   const router = useRouter();
+   const { setIsLoggedIn } = useAuth();
 
-  const router = useRouter();
-  
-  const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  try {
-    const res = await axios.post("http://localhost:5000/api/users/login", form, {
-      withCredentials: true,
-    });
+    const { register, handleSubmit, formState } = useForm<RegisterFormData>({
+      resolver: zodResolver(registerSchema)
+    })
+    
+    
+    const onSubmit = async (data: RegisterFormData) => {
+    
+        try {
+          const token = localStorage.getItem("accessToken");
 
-    if (process.env.NODE_ENV === "development") {
-      // Store tokens locally for dev
-      localStorage.setItem("accessToken", res.data.accessToken);
-      localStorage.setItem("refreshToken", res.data.refreshToken);
-      setIsLoggedIn(true);
-    }
+          const res = await axios.post("http://localhost:5000/api/users/login", data, {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+          withCredentials: true, // for cookie auth if used
+        });
 
-    const { user, message } = res.data;
-    setMessage(`✅ ${message} — ${user.email}`);
-    router.push("/dashboard");
+        if (process.env.NODE_ENV === "development") {
+          // Store tokens locally for dev
+          localStorage.setItem("accessToken", res.data.accessToken);
+          localStorage.setItem("refreshToken", res.data.refreshToken);
+          setIsLoggedIn(true);
+        }
+    
+        router.push("/dashboard");
 
-  } catch {
-    setMessage(`❌ "Something went wrong"}`);
-  }
-};
+        } catch (error) {
+          if (error instanceof Error)
+            alert("Something when wrong")
+        }
+      }
 
 
-  return (
+   return (
     <div>
-    <form onSubmit={handleSubmit} className="flex flex-col gap-2 w-80 mt-40 m-auto">
-      <input
-        type="email"
-        placeholder="Email"
-        value={form.email}
-        onChange={e => setForm({ ...form, email: e.target.value })}
-        className="border p-2 py-3 px-3 rounded"
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={form.password}
-        onChange={e => setForm({ ...form, password: e.target.value })}
-        className="border p-2 py-3 px-3 rounded"
-      />
-      <button type="submit" className="bg-white text-black  hover:bg-black hover:text-white font-bold py-2 px-4 rounded cursor-pointer text-xl">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-2 w-80 mt-40 m-auto p-6 text-2xl">
+        <FormInput label='Email'  register={register("email")} error={formState.errors.email?.message} />
+        <FormInput label='Password' type="password" register={register("password")} error={formState.errors.password?.message} />
+      <button  disabled={formState.isSubmitting} type="submit" className="bg-white text-black  hover:bg-black hover:text-white font-bold py-2 px-4 rounded cursor-pointer text-xl">
         Sign in
       </button>
-      <p>{message}</p>
     </form>
     </div>
   );
